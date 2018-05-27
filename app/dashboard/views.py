@@ -1156,6 +1156,8 @@ def extend_issue_deadline(request):
     }
     return TemplateResponse(request, 'extend_issue_deadline.html', context)
 
+def funder_dashboard(request):
+    return TemplateResponse(request, 'funder_dashboard.html', {})
 
 @require_POST
 @csrf_exempt
