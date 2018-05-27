@@ -1596,6 +1596,16 @@ class Profile(SuperModel):
         return self.user.is_staff if self.user else False
 
     @property
+    def is_funder(self):
+        """Determine whether or not the user is a funder.
+
+        Returns:
+            bool: Whether or not the user is a funder.
+
+        """
+        return self.stats[0][0] == 'funder'
+
+    @property
     def stats(self):
         bounties = self.bounties.stats_eligible()
         loyalty_rate = 0
