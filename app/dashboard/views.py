@@ -1141,6 +1141,7 @@ def get_quickstart_video(request):
     return TemplateResponse(request, 'quickstart_video.html', context)
 
 
+
 @csrf_exempt
 @ratelimit(key='ip', rate='5/m', method=ratelimit.UNSAFE, block=True)
 def extend_issue_deadline(request):
