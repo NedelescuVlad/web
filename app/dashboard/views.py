@@ -1214,8 +1214,8 @@ def funder_dashboard_outgoing_funds(request):
             or by fund status - "Pending" / "Claimed"
         orderBy: "Recent" || "Oldest" || "Highest Value" || "Lowest Value"
     """
-    includeOnly = request.REQUEST['includeOnly']
-    orderBy = request.REQUEST['orderBy']
+    includeOnly = request.POST.get('includeOnly', None)
+    orderBy = request.POST.get('orderBy', None)
 
     funds = [];
     for i in range(5):
@@ -1251,8 +1251,8 @@ def funder_dashboard_bounties(request):
         orderBy: "Recent" || "Oldest" || "Highest Value" || "Lowest Value"
     """
 
-    includeOnly = request.REQUEST['includeOnly']
-    orderBy = request.REQUEST['orderBy']
+    includeOnly = request.POST.get('includeOnly', None)
+    orderBy = request.POST.get('orderBy', None)
 
     bounties = [];
     for i in range(5):
@@ -1272,7 +1272,7 @@ def funder_dashboard_bounties(request):
         'bounties': bounties
     }
 
-    return JsonResponse(response, status=result['status'])
+    return JsonResponse(response, status=response['status'])
 
 
 @csrf_exempt
