@@ -1140,6 +1140,7 @@ def get_quickstart_video(request):
     }
     return TemplateResponse(request, 'quickstart_video.html', context)
 
+
 def funder_dashboard(request):
     """ Render the funder dashboard"""
 
