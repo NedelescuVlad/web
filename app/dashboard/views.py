@@ -43,6 +43,7 @@ from git.utils import get_auth_url, get_github_user_data, is_github_token_valid
 from marketing.mails import (
     admin_contact_funder, bounty_uninterested, start_work_approved, start_work_new_applicant, start_work_rejected,
 )
+from django.core.serializers.json import DjangoJSONEncoder
 from marketing.models import Keyword
 from pytz import UTC
 from ratelimit.decorators import ratelimit
@@ -1390,13 +1391,13 @@ def funder_dashboard(request):
         "total_contributors_count": total_contributors_count,
         "total_paid_dollars": total_paid_dollars,
         "total_paid_eth": total_paid_eth,
-        "total_paid_date_used_to_say_since": total_paid_date_since,
+        "total_paid_date_since": total_paid_date_since,
         "total_budget_dollars": total_budget_dollars,
         "total_budget_eth": total_budget_eth,
         # Payout History
-        "payout_history_weekly": json.dumps(payout_history_weekly, ensure_ascii=False),
-        "payout_history_monthly": json.dumps(payout_history_monthly, ensure_ascii=False),
-        "payout_history_yearly": json.dumps(payout_history_yearly, ensure_ascii=False),
+        "payout_history_weekly": json.dumps(payout_history_weekly, ensure_ascii=False, cls=DjangoJSONEncoder),
+        "payout_history_monthly": json.dumps(payout_history_monthly, ensure_ascii=False, cls=DjangoJSONEncoder),
+        "payout_history_yearly": json.dumps(payout_history_yearly, ensure_ascii=False, cls=DjangoJSONEncoder),
         # Tax Reporting
         "tax_year": tax_year,
         "tax_year_bounties_count": tax_year_bounties_count,
@@ -1410,13 +1411,12 @@ def funder_dashboard(request):
         "top_contributors": top_contributors,
         # Table data - outgoing funds and bounties
         "outgoing_funds_filters": outgoing_funds_filters,
-        "outgoing_funds": json.dumps(outgoing_funds, ensure_ascii=False),
+        "outgoing_funds": json.dumps(outgoing_funds, ensure_ascii=False, cls=DjangoJSONEncoder),
         "all_bounties_filters": all_bounties_filters,
-        "all_bounties": json.dumps(all_bounties, ensure_ascii=False)
+        "all_bounties": json.dumps(all_bounties, ensure_ascii=False, cls=DjangoJSONEncoder)
     }
 
     return TemplateResponse(request, 'funder_dashboard.html', context)
-
 
 
 @csrf_exempt
