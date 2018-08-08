@@ -1867,7 +1867,7 @@ def change_bounty(request, bounty_id):
         try:
             params = json.loads(request.body)
         except Exception:
-            return JsonResponse({'error': 'Invalid JSON.'}, status=400)
+            return JsonResponse({'error': 'Invalid JSON.'}, status=405)
 
         bounty_changed = False
         for key in keys:
@@ -1909,25 +1909,3 @@ def change_bounty(request, bounty_id):
         'result': result
     }
     return TemplateResponse(request, 'bounty/change.html', params)
-
-
-def get_users(request):
-    if request.is_ajax():
-        q = request.GET.get('term')
-        profiles = Profile.objects.filter(handle__icontains=q)
-        results = []
-        for user in profiles:
-            profile_json = {}
-            profile_json['id'] = user.id
-            profile_json['text'] = user.handle
-            profile_json['email'] = user.email
-            profile_json['avatar_id'] = user.avatar_id
-            if user.avatar_id:
-                profile_json['avatar_url'] = user.avatar_url
-            profile_json['preferred_payout_address'] = user.preferred_payout_address
-            results.append(profile_json)
-        data = json.dumps(results)
-    else:
-        raise Http404
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)

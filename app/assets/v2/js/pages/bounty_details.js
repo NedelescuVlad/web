@@ -923,9 +923,9 @@ var do_actions = function(result) {
     const _entry = {
       enabled: true,
       href: '/bounty/change/' + result['pk'],
-      text: gettext('Edit Issue Details'),
+      text: gettext('Change Bounty Details'),
       parent: 'right_actions',
-      title: gettext('Update your Bounty Settings to get the right Crowd')
+      title: gettext('Change the Bounty Details')
     };
 
     actions.push(_entry);

@@ -514,6 +514,28 @@ def bounty_changed(bounty, to_emails=None):
             translation.activate(cur_language)
 
 
+def bounty_changed(bounty, to_emails=None):
+    if not bounty or not bounty.value_in_usdt_now:
+        return
+
+    subject = gettext("Bounty Details Changed for {}").format(bounty.title_or_desc)
+
+    if to_emails is None:
+        to_emails = []
+
+    for to_email in to_emails:
+        cur_language = translation.get_language()
+        try:
+            setup_lang(to_email)
+            from_email = settings.CONTACT_EMAIL
+            html, text = render_bounty_changed(to_email, bounty)
+
+            if not should_suppress_notification_email(to_email, 'bounty'):
+                send_mail(from_email, to_email, subject, text, html)
+        finally:
+            translation.activate(cur_language)
+
+
 def new_match(to_emails, bounty, github_username):
 
     subject = gettext("⚡️ {} Meet {}: {}! ").format(github_username.title(), bounty.org_name.title(), bounty.title)
