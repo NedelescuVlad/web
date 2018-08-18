@@ -56,8 +56,7 @@ from retail.helpers import get_ip
 from web3 import HTTPProvider, Web3
 
 from .helpers import (
-    eth_format, get_bounty_data_for_activity, get_payout_history, handle_bounty_views, to_funder_dashboard_bounty,
-    usd_format
+    get_bounty_data_for_activity, get_payout_history, handle_bounty_views, to_funder_dashboard_bounty,
 )
 from .models import (
     Activity, Bounty, CoinRedemption, CoinRedemptionRequest, Interest, Profile, ProfileSerializer, Subscription, Tool,
@@ -70,6 +69,7 @@ from .notifications import (
 )
 from .utils import (
     get_bounty, get_bounty_id, get_context, has_tx_mined, record_user_action_on_interest, web3_process_bounty,
+    eth_format, usd_format
 )
 
 logger = logging.getLogger(__name__)
