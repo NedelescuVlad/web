@@ -1151,6 +1151,8 @@ def get_quickstart_video(request):
     return TemplateResponse(request, 'quickstart_video.html', context)
 
 
+@cache_page(60 * 60 * 24)
+@vary_on_cookie
 def funder_dashboard(request):
     """ Render the funder dashboard"""
 
