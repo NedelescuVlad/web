@@ -43,6 +43,7 @@ from django.views.decorators.http import require_GET, require_POST
 from app.utils import ellipses, sync_profile
 from avatar.utils import get_avatar_context
 from gas.utils import recommend_min_gas_price_to_confirm_in_time
+from economy.utils import convert_amount, etherscan_link
 from git.utils import get_auth_url, get_github_user_data, is_github_token_valid
 from marketing.mails import (
     admin_contact_funder, bounty_uninterested, start_work_approved, start_work_new_applicant, start_work_rejected,
@@ -1307,7 +1308,7 @@ def funder_dashboard(request):
     outgoing_funds = []
     for bounty in done_bounties.filter(fulfillment_started_on__isnull=False):
         # TODO: Need the txid to generate this link. Where is it in the bounty object, if at all?
-        etherscan_link = '#'
+        link_to_etherscan = etherscan_link('#')
 
         if bounty.fulfillments.filter(accepted=True).exists():
             fund_status = 'Claimed'
@@ -1320,7 +1321,7 @@ def funder_dashboard(request):
             'title': escape(bounty.title),
             'type': fund_type,
             'status': fund_status,
-            'etherscanLink': etherscan_link,
+            'etherscanLink': link_to_etherscan,
             'worthDollars': usd_format(bounty.get_value_in_usdt),
             'worthEth': eth_format(bounty.get_value_in_eth)
         })
@@ -1332,14 +1333,14 @@ def funder_dashboard(request):
         else:
             tip_status = "Pending"
 
-        etherscan_link = "https://etherscan.io/tx/" + tip.txid
+        link_to_etherscan = etherscan_link(tip.txid)
         if tip.bounty:
             outgoing_funds.append({
                 'id': tip.bounty.github_issue_number,
                 'title': tip.bounty.title,
                 'type': 'Tip',
                 'status': tip_status,
-                'etherscanLink': etherscan_link,
+                'etherscanLink': link_to_etherscan,
                 'worthDollars': usd_format(tip.value_in_usdt),
                 'worthEth': eth_format(tip.value_in_eth)
             })
