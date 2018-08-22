@@ -49,7 +49,7 @@ function debounce(func, wait, immediate) {
  * Fetches all filters options from the URI
  */
 var getActiveFilters = function() {
-  sidebar_keys.forEach(filter => {
+  filters.forEach(filter => {
     if (getParam(filter)) {
       localStorage[filter] = getParam(filter).replace(/^,|,\s*$/g, '');
     }
@@ -61,7 +61,8 @@ var getActiveFilters = function() {
  */
 var buildURI = function() {
   let uri = '';
-  sidebar_keys.forEach((filter) => {
+
+  filters.forEach((filter) => {
     if (localStorage[filter] &&
       localStorage[filter] != null &&
       localStorage[filter] != 'any') {
@@ -69,7 +70,8 @@ var buildURI = function() {
     }
   });
 
-  var _filters = ['keywords', 'order_by'];
+  var _filters = [ 'keywords', 'order_by' ];
+
   _filters.forEach((filter) => {
     if (localStorage[filter] &&
       localStorage[filter] != '') {
@@ -86,7 +88,6 @@ var buildURI = function() {
 var save_sidebar_latest = function() {
   localStorage['order_by'] = $('#sort_option').val();
 
-<<<<<<< HEAD
   filters.forEach((filter) => {
     localStorage[filter] = '';
 
@@ -96,20 +97,6 @@ var save_sidebar_latest = function() {
 
     localStorage[filter] = localStorage[filter].replace(/^,|,\s*$/g, '');
   });
-=======
-  for (var i = 0; i < sidebar_keys.length; i++) {
-    var key = sidebar_keys[i];
- 
-    localStorage[key] = '';
-
-    $('input[name="' + key + '"]:checked').each(function() {
-      localStorage[key] += $(this).val() + ',';
-    });
-
-    // Trim trailing comma to avoid empty element on split
-    localStorage[key] = localStorage[key].replace(/^,|,\s*$/g, '');
-  }
->>>>>>> dashboard: display active filters on url
 };
 
 // saves search information default
@@ -568,11 +555,7 @@ function getURLParams(k) {
   return k ? p[k] : p;
 }
 
-/**
- * removed all filters from the sidebar search
- * resetKeyword : boolean
- */
-var resetFilters = function(resetKeyword) {
+var resetFilters = function() {
   filters.forEach((filter) => {
     var tag = ($('input[name="' + filter + '"][value]'));
 
