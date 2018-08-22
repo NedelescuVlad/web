@@ -49,7 +49,14 @@ function debounce(func, wait, immediate) {
  * Fetches all filters options from the URI
  */
 var getActiveFilters = function() {
-  filters.forEach(filter => {
+
+  if (window.location.search) {
+    resetFilters();
+  }
+  let _filters = filters.slice();
+
+  _filters.push('keywords', 'order_by');
+  _filters.forEach(filter => {
     if (getParam(filter)) {
       localStorage[filter] = getParam(filter).replace(/^,|,\s*$/g, '');
     }
@@ -61,20 +68,13 @@ var getActiveFilters = function() {
  */
 var buildURI = function() {
   let uri = '';
+  let _filters = filters.slice();
 
-  filters.forEach((filter) => {
+  _filters.push('keywords', 'order_by');
+  _filters.forEach((filter) => {
     if (localStorage[filter] &&
       localStorage[filter] != null &&
       localStorage[filter] != 'any') {
-      uri += (filter + '=' + localStorage[filter] + '&');
-    }
-  });
-
-  var _filters = [ 'keywords', 'order_by' ];
-
-  _filters.forEach((filter) => {
-    if (localStorage[filter] &&
-      localStorage[filter] != '') {
       uri += (filter + '=' + localStorage[filter] + '&');
     }
   });
@@ -555,7 +555,11 @@ function getURLParams(k) {
   return k ? p[k] : p;
 }
 
-var resetFilters = function() {
+/**
+ * removed all filters from the sidebar search
+ * resetKeyword : boolean
+ */
+var resetFilters = function(resetKeyword) {
   filters.forEach((filter) => {
     var tag = ($('input[name="' + filter + '"][value]'));
 
