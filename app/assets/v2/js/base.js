@@ -16,7 +16,7 @@ $(document).ready(function() {
 
   force_no_www();
 
-  if (!$('.header > .minihero').length && $('.header > .navbar').length) {
+  if (!$('.header > .minihero')) {
     $('.header').css('overflow', 'visible');
   }
 
