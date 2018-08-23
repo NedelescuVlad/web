@@ -749,13 +749,6 @@ def new_bounty_request(model):
         body_str = _(f"New Bounty Request from")
         body = f"{body_str} {model.requested_by}: "\
             f"{settings.BASE_URL}_administrationbounty_requests/bountyrequest/{model.pk}/change"
-        send_mail(
-            from_email,
-            to_email,
-            subject,
-            body,
-            from_name=_("No Reply from Gitcoin.co"),
-            categories=['admin', 'new_bounty_request'],
-        )
+        send_mail(from_email, to_email, subject, body, from_name=_("No Reply from Gitcoin.co"))
     finally:
         translation.activate(cur_language)
