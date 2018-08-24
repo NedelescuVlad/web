@@ -55,8 +55,6 @@ def helper_execute(threshold, func_to_execute, action_str):
                 continue
             print(f"- {interest.pk} {action_str}")
             func_to_execute(interest, bounty)
-        else:
-            logger.error(f'Interest: {interest} missing bounty')
 
 
 class Command(BaseCommand):
