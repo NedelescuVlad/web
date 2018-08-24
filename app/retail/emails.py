@@ -525,7 +525,7 @@ def render_start_work_applicant_expired(interest, bounty):
 def render_new_bounty_roundup(to_email):
     from dashboard.models import Bounty
     from external_bounties.models import ExternalBounty
-    subject = "$60K In Funding For Web 3 Infrastructure Projects"
+    subject = "Gitcoin Requests | $60K ECF Grant"
 
     intro = '''
 
@@ -533,21 +533,22 @@ def render_new_bounty_roundup(to_email):
 Hi there,
 </p>
 <p>
-We're excited to formally announce an expansion of our ECF Partnership, bringing $60K in funding to the <a href="https://medium.com/@mitchkosowski/cbe1d2d1c071">Ethereum Infrastructure layer</a>!
-As stated in the article, if you know of any open source projects / specific Github issues which could use some funding, <a href="https://gitcoin.co/requests">make a Gitcoin Request</a> and comment 'ECF'.
-We're very excited to make it easy to contribute to the ecosystem, while getting paid.
+This week, we launched Gitcoin Requests. Gitcoin Requests allows funders and developers to request bounties on
+specific Github issues. We hope that maintainers and developers alike use this feature to let us know what else they'd
+like to have funded so we can continue building at break-neck speed!
 </p>
+To this end, we have recently received $60K grant from the Ethereum Community Fund to post bounties across a variety of Web 3
+repo's who are building interesting infrastructure tools in the Ethereum space. Where might you go to request funding on your repo?
+You know the answer :)
 <p>
-We're still working with the Ethereum Foundation to find the best and brightest developers to get involved directly on Ethereum's
-codebase. We'd love to hear from you. If you have experience building out test cases and are familiar with consensus systems,
-join #focus-dev-testing <a href="https://gitcoin.co/slack">on Gitcoin Slack</a>.
 </p>
 
 <h3>What else is new?</h3>
     <ul>
         <li>
-        <a href="https://medium.com/gitcoin/embarking-into-web-3-f46408b23f59">Our Status partnership</a> is off to a hot start, with all 14 of the initial bounties picked up in 6 hours.
-        Be on the lookout for the seconds batch sometime next week!
+We're still working with the Ethereum Foundation to find the best and brightest developers to get involved directly on Ethereum's
+codebase and would love to hear from you. If you have experience building out test cases and are familiar with consensus systems,
+join #focus-dev-testing <a href="https://gitcoin.co/slack">on Gitcoin Slack</a>
         </li>
         <li>
         There have now been 20 Gitcoin Requests for over $5,000! Do you have a Github issue you want solved? Make <a href="https://gitcoin.co/requests">a Gitcoin Request</a> and we'll review in 24 hours.
@@ -557,6 +558,10 @@ join #focus-dev-testing <a href="https://gitcoin.co/slack">on Gitcoin Slack</a>.
         <li>
         No Gitcoin Livestream this week, but we're excited <a href="https://gitcoin.co/livestream">to be back next week</a> at 5PM ET. Have a great weekend!
         </li>
+        <li>
+We published our recent Gitcoin Livestream with Decentraland on Gitcoin's Youtube. It was a great conversation on NFT's and their virtual world.
+Check out Chainshot and Portis on this week's <a href="https://gitcoin.co/livestream">this week's livestream</a> today at 5PM ET. We'd love to have you!
+        </li>
     </ul>
 </p>
 <p>
@@ -565,40 +570,40 @@ Back to BUIDLing,
 '''
     highlights = [
         {
-            'who': 'eiselems',
+            'who': 'tcrowe',
             'who_link': True,
-            'what': 'Completed the first Status Embark bounty in 48 hours!',
-            'link': 'https://gitcoin.co/issue/embark-framework/embark/765/1089',
+            'what': 'Build a feedback form on the Plasma Learning page.',
+            'link': 'https://gitcoin.co/issue/ethsociety/learn-plasma/17/970',
             'link_copy': 'View more',
         },
         {
-            'who': 'lastmjs',
+            'who': 'pinkiebell',
             'who_link': True,
-            'what': 'Worked with Piper and Carver at the Ethereum Foundation on web3py.',
-            'link': 'https://gitcoin.co/issue/ethereum/web3.py/962/1036',
+            'what': 'Built out the Gitcoin Requests highlighted above!',
+            'link': 'https://gitcoin.co/issue/gitcoinco/web/2036/982',
             'link_copy': 'View more',
         },
         {
-            'who': 'bakaoh',
+            'who': 'evgeniuz',
             'who_link': True,
-            'what': 'Back at it, this time on the OmiseGO Plasma MVP repo.',
-            'link': 'https://gitcoin.co/issue/omisego/plasma-mvp/170/967',
+            'what': 'Helped MetaMask to remember recent RPC URL's.',
+            'link': 'https://gitcoin.co/issue/Bounties-Network/bounties.network/7/927',
             'link_copy': 'View more',
         },
     ]
 
     bounties_spec = [
         {
-            'url': 'https://github.com/ethereum-alarm-clock/timenode-core/issues/194',
-            'primer': 'Work on Ethereum Alarm Clock, a project for transactions into the future!',
+            'url': 'https://github.com/diadata-org/api-golang/issues/22',
+            'primer': 'Have Go chops? Diadata is building out an API and could use your help.',
         },
         {
-            'url': 'https://github.com/prysmaticlabs/prysm/issues/437',
-            'primer': 'Work on Sharding with the Prysmatic Labs folks!',
+            'url': 'https://github.com/raiden-network/raiden/issues/1426',
+            'primer': 'A longtime open issue to help Raiden with state channels work.',
         },
         {
-            'url': 'https://github.com/zeppelinos/zos/issues/37',
-            'primer': 'Great bounty for the ecosystem from the Zeppelin team.',
+            'url': 'https://github.com/livepeer/livepeerjs/issues/44',
+            'primer': 'Help Livepeer fix a funny bug in fullscreen mode.',
         },
     ]
 
