@@ -243,34 +243,10 @@
               </a>
             </div>
           </div>
-          [[if activity_type == 'work_done']]
-            <div class="col-12 col-md-7 fulfilled">
-              <div class="activity-status">
-                [[:text]]
-                <i class="far fa-check-circle"></i>
-              </div>
-              [[if fulfiller_address]]
-                <div>
-                  <span class="bounty-subheading">{% trans "ETH Address" %} :</span>
-                  <span class="bounty-text">
-                    <a href="https://etherscan.io/address/[[:fulfiller_address]]" target="_blank" rel="noopener noreferrer">[[:fulfiller_address]]</a>
-                  </span>
-                </div>
-              [[/if]]
-              [[if fulfiller_email]]
-                <div>
-                  <span class="bounty-subheading">{% trans "Email" %} :</span>
-                  <span class="bounty-text">
-                    <a href="mailto:[[:fulfiller_email]]">[[:fulfiller_email]]</a>
-                  </span>
-                </div>
-              [[/if]]
-              [[if fulfillment_id]]
-                <div>
-                  <span class="bounty-subheading">{% trans "Submission Id" %} :</span>
-                  <span class="bounty-text">[[:fulfillment_id]]</span>
-                </div>
-              [[/if]]
+        [[else activity_type == 'start_work' || activity_type == 'worker_approved' || activity_type == 'bounty_abandonment_warning || activity_type == 'worker_applied' ]]
+          <div class="col-12 col-md-7 started-status-column">
+            <div class="activity-status">
+              [[:text]]
             </div>
           [[else activity_type == 'start_work' || activity_type == 'worker_approved' || activity_type == 'bounty_abandonment_warning' ]]
             <div class="col-12 col-md-7 started-status-column">
