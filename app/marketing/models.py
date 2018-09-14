@@ -49,16 +49,18 @@ class EmailSubscriber(SuperModel):
     source = models.CharField(max_length=50)
     active = models.BooleanField(default=True)
     newsletter = models.BooleanField(default=True)
-    preferences = JSONField(default={})
-    metadata = JSONField(default={})
+    preferences = JSONField(default=dict)
+    metadata = JSONField(default=dict)
     priv = models.CharField(max_length=30, default='')
     github = models.CharField(max_length=255, default='')
-    keywords = ArrayField(models.CharField(max_length=200), blank=True, default=[])
+    keywords = ArrayField(models.CharField(max_length=200), blank=True, default=list)
     profile = models.ForeignKey(
         'dashboard.Profile',
         on_delete=models.CASCADE,
         related_name='email_subscriptions',
         null=True)
+    form_submission_records = JSONField(default=list, blank=True)
+
 
     def __str__(self):
         return self.email
@@ -67,6 +69,10 @@ class EmailSubscriber(SuperModel):
         self.priv = token_hex(16)[:29]
 
     def should_send_email_type_to(self, email_type):
+        is_on_global_suppression_list = EmailSupressionList.objects.filter(email__iexact=self.email).exists()
+        if is_on_global_suppression_list:
+            return False
+
         should_suppress = self.preferences.get('suppression_preferences', {}).get(email_type, False)
         return not should_suppress
 
@@ -158,12 +164,30 @@ class Stat(SuperModel):
             return 0
 
 
+class LeaderboardRankQuerySet(models.QuerySet):
+    """Handle the manager queryset for Leaderboard Ranks."""
+
+    def active(self):
+        """Filter results to only active LeaderboardRank objects."""
+        return self.select_related('profile', 'profile__avatar').filter(active=True)
+
+
 class LeaderboardRank(SuperModel):
 
+    profile = models.ForeignKey(
+        'dashboard.Profile',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='leaderboard_ranks',
+    )
     github_username = models.CharField(max_length=255)
     leaderboard = models.CharField(max_length=255)
     amount = models.FloatField()
     active = models.BooleanField()
+    count = models.IntegerField(default=0)
+    rank = models.IntegerField(default=0)
+
+    objects = LeaderboardRankQuerySet.as_manager()
 
     def __str__(self):
         return f"{self.leaderboard}, {self.github_username}: {self.amount}"
@@ -173,8 +197,27 @@ class LeaderboardRank(SuperModel):
         return f"https://github.com/{self.github_username}"
 
     @property
+    def is_user_based(self):
+        return '_tokens' not in self.leaderboard and '_keywords' not in self.leaderboard
+
+    @property
+    def at_ify_username(self):
+        if self.is_user_based:
+            return f"@{self.github_username}"
+        return self.github_username
+
+
+    @property
     def avatar_url(self):
-        return f"/static/avatar/{self.github_username}"
+        if self.profile and self.profile.avatar:
+            return self.profile.avatar.get_avatar_url()
+        key = self.github_username
+
+        # these two types won't have images
+        if not self.is_user_based:
+            key = 'None'
+
+        return f"/dynamic/avatar/{key}"
 
 
 class Match(SuperModel):
@@ -203,7 +246,7 @@ class SlackUser(SuperModel):
     email = models.EmailField(max_length=255)
     last_seen = models.DateTimeField(null=True)
     last_unseen = models.DateTimeField(null=True)
-    profile = JSONField(default={})
+    profile = JSONField(default=dict)
     times_seen = models.IntegerField(default=0)
     times_unseen = models.IntegerField(default=0)
 
@@ -225,7 +268,7 @@ class GithubEvent(SuperModel):
     profile = models.ForeignKey('dashboard.Profile', on_delete=models.CASCADE, related_name='github_events')
     what = models.CharField(max_length=500, default='', blank=True)
     repo = models.CharField(max_length=500, default='', blank=True)
-    payload = JSONField(default={})
+    payload = JSONField(default=dict)
 
     def __str__(self):
         return f"{self.profile.handle} / {self.what} / {self.created_on}"
@@ -244,7 +287,15 @@ class EmailEvent(SuperModel):
 
     email = models.EmailField(max_length=255, db_index=True)
     event = models.CharField(max_length=255, db_index=True)
-    payload = JSONField(default={})
+    category = models.CharField(max_length=255, db_index=True, blank=True, default='')
+    ip_address = models.GenericIPAddressField(default=None, null=True)
 
     def __str__(self):
         return f"{self.email} - {self.event} - {self.created_on}"
+
+
+class EmailSupressionList(SuperModel):
+
+    email = models.EmailField(max_length=255)
+    metadata = JSONField(default=dict, blank=True)
+    comments = models.TextField(max_length=5000, blank=True)
