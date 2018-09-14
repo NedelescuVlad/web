@@ -320,7 +320,12 @@ urlpatterns = [
     re_path(r'^settings/account/?', marketing.views.account_settings, name='account_settings'),
     re_path(r'^settings/tokens/?', marketing.views.token_settings, name='token_settings'),
     re_path(r'^settings/(.*)?', marketing.views.email_settings, name='settings'),
-    re_path(r'^funder_dashboard/', dashboard.views.funder_dashboard, name='funder_dashboard'),
+
+    # funder dashboard
+    re_path(r'^funder_dashboard', dashboard.views.funder_dashboard, name='funder_dashboard'),
+    re_path(r'^update_funder_total_budget',
+            dashboard.views.update_funder_total_budget,
+            name='update_funder_total_budget'),
 
     # marketing views
     url(r'^leaderboard/(.*)', marketing.views.leaderboard, name='leaderboard'),
