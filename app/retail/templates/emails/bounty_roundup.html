@@ -51,104 +51,44 @@
 </style>
 
 <div class="roundup">
-    <div>
-        <h1>{% trans "The Gitcoin Weekly" %}</h1>
-    </div>
+  <div>
+    <h1>{% trans "The Gitcoin Weekly" %}</h1>
+  </div>
 
-    <div style="text-align: left;" class='intro'>
-        {{ intro | safe }}
-
-        <div style="text-align: center; ">
-            <a href="https://twitter.com/owocki">
-                <img style="max-height: 170px; " src="{% static "v2/images/avatar.png" %}">
-            </a>
-
-            <p>
-                <a href="https://twitter.com/owocki">@owocki</a>
-            </p>
-        </div>
-
-        <hr>
-    </div>
-
-    {% if highlights %}
-
-        <h3>{% trans "Last Week's Highlights" %}</h3>
-        <h5>{% trans "Community Members growing open source" %}</h5>
-
-        <div style="text-align: left;">
-            {% for highlight in highlights %}
-                <li style="list-style:none; margin-bottom: 5px;">
-                    {% if highlight.who_link %}
-                        <img style="border-radius: 20px;" src="https://gitcoin.co/dynamic/avatar/{{highlight.who}}" width=30px height=30px>
-                        <a style="font-weight: bold; text-decoration: none;" href="https://gitcoin.co/profile/{{highlight.who}}">{{highlight.who}}</a>
-                    {% else %}
-                        * <strong>{{highlight.who}}</strong>
-                    {% endif %}
-                     - {{highlight.what}}
-                    {% if highlight.link %}
-                        <a href="{{highlight.link}}">{{highlight.link_copy}}</a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </div>
-        <br>
-        <br>
-
-        <hr>
-
-    {% endif %}
-
-    <div>
-        <h3>{% trans "Open Funded Issues" %}</h3>
-        <h5>{% trans "Grow Open Source &amp; Make Some ETH" %}</h5>
-    </div>
-
-    {% for bounty in bounties %}
-        {% include 'emails/bounty.html' with bounty=bounty.obj small=1 primer=bounty.primer %}
-    {% endfor %}
-
-    <div class="centered-contents">
-        <p>{% trans "Don't see anything that strikes your fancy above?" %}</p>
-        <p>{% trans "There are more issues in the Gitcoin Issue Explorer:" %}</p>
-
-        <div style="margin-bottom: 2em;">
-            <a class="button" href="https://gitcoin.co/explorer">{% trans "View Issue Explorer" %}</a>
-        </div>
+  <div style="text-align: left;" class='intro'>
+    {{ intro|safe }}
+    <div style="text-align: center; ">
+      <a href="https://twitter.com/owocki">
+        <img style="max-height: 170px; " src="{% static "v2/images/avatar.png" %}">
+      </a>
+      <p>
+        <a href="https://twitter.com/owocki">@owocki</a>
+      </p>
     </div>
     <hr>
+  </div>
+  {% if highlights %}
+    <h3>{% trans "Last Week's Highlights" %}</h3>
+    <h5>{% trans "Community Members growing open source" %}</h5>
 
-    {% if leaderboard %}
-
-        <h3>{% trans "Who's leading the Leaderboard?" %}</h3>
-        <h5>{% trans "See the top Gitcoin Network Members For the last 90 Days" %}</h5>
-
-        <div style="text-align: left;">
-          {% for key, package in leaderboard.items %}
-            <div style="width: 30%; display: inline-block; min-width: 250px;">
-              <h4>{{package.title}}</h4>
-              <ul>
-                {% for leaderboard_item in package.items %}
-                <li style="list-style:none; margin-bottom: 5px;">
-                        {{leaderboard_item.rank}}. <img style="border-radius: 20px;" src="https://gitcoin.co/dynamic/avatar/{{leaderboard_item.github_username}}" width=30px height=30px>
-                        <a style="font-weight: bold; text-decoration: none;" href="https://gitcoin.co/profile/{{leaderboard_item.github_username}}">{{leaderboard_item.github_username}}</a> : ${{leaderboard_item.amount|floatformat:2}}
-                </li>
-              {% endfor %}
-              </ul>
-            </div>
-          {% endfor %}
-
-        </div>
-        <br>
-        <br>
-          <div style="margin-bottom: 2em;">
-              <a class="button" href="https://gitcoin.co/leaderboard">{% trans "View Leaderboard" %}</a>
-          </div>
-
-        <hr>
-
-    {% endif %}
-
+    <div style="text-align: left;">
+      {% for highlight in highlights %}
+        <li style="list-style:none; margin-bottom: 5px;">
+          {% if highlight.who_link %}
+            <img style="border-radius: 20px;" src="{% avatar_url highlight.who 0 %}" width=30px height=30px>
+            <a style="font-weight: bold; text-decoration: none;" href="{% url "profile" highlight.who %}">{{ highlight.who }}</a>
+          {% else %}
+            * <strong>{{ highlight.who }}</strong>
+          {% endif %}
+            - {{ highlight.what }}
+          {% if highlight.link %}
+            <a href="{{ highlight.link }}">{{ highlight.link_copy }}</a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </div>
+    <br>
+    <br>
     <hr>
   {% endif %}
   <div>

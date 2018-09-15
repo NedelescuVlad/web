@@ -224,17 +224,12 @@
     </script>
 
     <script id="activity_template" type="text/x-jsrender">
-      <div class="row box activity">
-        <div class="col-12 col-md-1">
-          <div class="activity-avatar">
-            <img class="avatar" src="/dynamic/avatar/[[:name]]"/>
-          </div>
-        </div>
-        <div class="col-12 col-md-2">
-          <div class="activity-name">
-            <a href="https://gitcoin.co/profile/[[:name]]" target="_blank">
-              [[:name]]
-            </a>
+      [[if activity_type != 'unknown_event']]
+        <div class="row box activity">
+          <div class="col-12 col-md-1">
+            <div class="activity-avatar">
+              <img class="avatar" src="/dynamic/avatar/[[:name]]"/>
+            </div>
           </div>
           <div class="col-12 col-md-2">
             <div class="activity-name">
@@ -243,10 +238,34 @@
               </a>
             </div>
           </div>
-        [[else activity_type == 'start_work' || activity_type == 'worker_approved' || activity_type == 'bounty_abandonment_warning || activity_type == 'worker_applied' ]]
-          <div class="col-12 col-md-7 started-status-column">
-            <div class="activity-status">
-              [[:text]]
+          [[if activity_type == 'work_done']]
+            <div class="col-12 col-md-7 fulfilled">
+              <div class="activity-status">
+                [[:text]]
+                <i class="far fa-check-circle"></i>
+              </div>
+              [[if fulfiller_address]]
+                <div>
+                  <span class="bounty-subheading">{% trans "ETH Address" %} :</span>
+                  <span class="bounty-text">
+                    <a href="https://etherscan.io/address/[[:fulfiller_address]]" target="_blank" rel="noopener noreferrer">[[:fulfiller_address]]</a>
+                  </span>
+                </div>
+              [[/if]]
+              [[if fulfiller_email]]
+                <div>
+                  <span class="bounty-subheading">{% trans "Email" %} :</span>
+                  <span class="bounty-text">
+                    <a href="mailto:[[:fulfiller_email]]">[[:fulfiller_email]]</a>
+                  </span>
+                </div>
+              [[/if]]
+              [[if fulfillment_id]]
+                <div>
+                  <span class="bounty-subheading">{% trans "Submission Id" %} :</span>
+                  <span class="bounty-text">[[:fulfillment_id]]</span>
+                </div>
+              [[/if]]
             </div>
           [[else activity_type == 'start_work' || activity_type == 'worker_approved' || activity_type == 'bounty_abandonment_warning' ]]
             <div class="col-12 col-md-7 started-status-column">
